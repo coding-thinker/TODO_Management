@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="/static/Register.css" />
+</head>
+
+
+<script>
+    function vertifyName(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var user = document.getElementById("user").value
+        var error = ''
+        var x
+        if(user.length < 5 || user.length > 20){
+            error += '用户名长度应当在5-20之间'
+        }
+        for(x in not_allowed){
+            if(user.indexOf(not_allowed[x]) != -1){
+                error += ' 用户名不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+                break
+            }
+        }
+        if(error == ''){
+            error = "这个用户名看上去挺合适"
+        }
+        document.getElementById("userWarning").innerHTML = error
+    }
+
+    function vertifyEmail(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var user = document.getElementById("email").value
+        var error = ''
+
+        if(user.indexOf('@') == -1){
+            error += '你的邮箱好像没有@耶?'
+        }
+
+        if(error == ''){
+            error = "这个邮箱看上去挺合适"
+        }
+        document.getElementById("emailWarning").innerHTML = error
+    }
+
+    function vertifyPwd(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var pwd = document.getElementById("pwd").value
+        var error = ''
+        var x
+        if(pwd.length < 5 || pwd.length > 20){
+            error += '密码长度应当在5-20之间'
+        }
+        for(x in not_allowed){
+            if(pwd.indexOf(not_allowed[x]) != -1){
+                error += ' 密码不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+                break
+            }
+        }
+        if(error == ''){
+            error = "这个密码看上去挺合适"
+        }
+        document.getElementById("pwdWarning").innerHTML = error
+        if(document.getElementById("pwd2").value.length != 0){
+            vertifyPwd2()
+        }
+    }
+
+    function vertifyPwd2(){
+        var pwd = document.getElementById("pwd").value
+        var pwd2 = document.getElementById("pwd2").value
+        var error = ''
+        var x
+        if(pwd.length != pwd2.length){
+            error = '两次密码不一致'
+        }else{
+            for(x in pwd){
+                if(pwd[x] != pwd2[x]){
+                    error = '两次密码不一致'
+                    break
+                }
+            }
+        }
+        if(error == ''){
+            error = '确认密码无误'
+        }
+        document.getElementById("pwd2Warning").innerHTML = error
+    }
+</script>
+
+
+<body background="http://attach.bbs.miui.com/forum/201210/31/200914wgvfz8bfwtftgubg.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
+   <h1 style="color: rgb(106,146,168);text-align: center;">TODO_Management</h1>
+   <h1 style="color: rgb(106,146,168);text-align: center;">注册界面</h1>
+    <form style="color: rgb(106,146,168);text-align: center;" action="/register_api/" method="post">
+        {% csrf_token %} 
+        <br><br>
+        <strong>用户名：</strong><input id="user" type="text" name="user" onchange="vertifyName()"/> <br>
+        <label id="userWarning"></label> <br><br>
+        <strong>邮箱：</strong><input id="email" type="text" name="email" onchange="vertifyEmail()"/> <br>
+        <label id="emailWarning"></label> <br><br>
+        <strong>密码：</strong><input id="pwd" type="password" name="pwd" onchange="vertifyPwd()"/><br>
+        <label id="pwdWarning"></label> <br><br>
+        <strong>确认密码：</strong><input id="pwd2" type="password" name="pwd2" onchange="vertifyPwd2()"/><br>
+        <label id="pwd2Warning"></label> <br><br>
+        <div>&nbsp;</div>
+        <input class="RegisterButton" type="submit" value="注册"/> <br>
+    </form>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome</title>
+</head>
+
+
+<style type="text/css">
+	*{margin: 0;padding: 0}
+	
+
+	.wrap{
+		width: 900px;
+		height: auto;
+		/* border: 1px solid brown; */
+		margin: 20px auto;
+		position: relative;
+	}
+	.nav{
+		width: 100%;
+		height: 30px;
+	}
+	.nav a{
+		width: 299px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		border-right: 1px solid brown;
+		border-bottom: 1px solid brown;
+		float: left;
+		text-decoration: none;
+		color:black;
+		border-radius: 8px;
+		background-color: #FF9933;
+	}
+	.sh{
+		width: 900px;
+		height: auto;
+		position: absolute;
+		left: 0;
+		top:31px;
+		background: #eeeeee;
+	}
+	.sh div{
+		display: none;
+		text-align: center;
+	}
+	.sh div:target{
+		display: block;
+	}
+	.logoutbtn {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:white;
+    font-weight: bold;
+	}
+	.logoutbtn:active{
+		box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+		border-color: rgba(0,0,0,.3);
+		background: #bbb;
+	}
+</style>
+
+
+<body background="https://clubimg.club.vmall.com/pic/2017/05/01/3461b05a82b085e81104773ca5379cae_AT9A6060.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
+	<div align='right'><button class='logoutbtn' onclick="Logout()"> 登出 </button></div>
+	<h1 style="color: rgb(220, 220, 228);text-align: center;">欢迎您！用户: {{ uname }}</h1>
+    <h1 style="color: rgb(100, 100, 150);text-align: center;">欢迎界面</h1>
+    <div class="wrap">
+        <div class="nav">
+            <a href="#personal">个人任务</a>
+            <a href="#group">组任务</a>
+            <a href="#profile">个人信息</a>
+        </div>
+        <div class="sh">
+            <div id="personal">
+				<!-- 个人任务区 -->
+				<!-- 增加按钮 -->
+				<br>
+				<button style="text-align: center;background-color: #FF66FF;border-radius: 8px;" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
+				<br><br>
+
+				<!-- 表 -->
+				<table border='1' style="margin: 0 auto;">
+					<tr>
+						<th>标志</th>
+						<th>任务号</th>
+						<th>任务名称</th>
+						<th>开始时间</th>
+						<th>截止时间</th>
+						<th>完成时间</th>
+						<th>重要性</th>
+						<th>勾选完成</th>
+					</tr>
+
+					<!-- 表体 -->
+					{% for item in personal %}
+						<tr>
+							<td><input type="checkbox" {{item.checked}} onclick="return false;"></td>
+							{% for cell in item.data %}
+								<td> {{ cell }} </td>
+							{% endfor %}
+							<td><form action="/setfinished/{{ uname }}/{{ item.ptno }}" method="POST"> {% csrf_token %}  <input type="submit" value='完成'></form></td>
+						</tr>
+					{% endfor %}
+				</table>
+				
+			</div>
+            <div id="group">组任务表将在这里显示</div>
+            <div id="profile">个人信息在这里<br><br>显示与修改</div>
+        </div>
+    </div>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg }}');
+        {% endfor %}
+    </script>
+	{% endif %}
+
+	<script>
+		function Logout(){
+			var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+            if (keys) {
+                for (var i = keys.length; i--;) {
+                    document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
+                }
+            }
+            alert('登出完成');
+			location.href = '/login'
+		}
+	</script>
+</body>
+</html>
