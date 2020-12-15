@@ -41,7 +41,7 @@
 		position: absolute;
 		left: 0;
 		top:31px;
-		background: #eeeeee;
+		background: #7fd673;
 	}
 	.sh div{
 		display: none;
@@ -67,6 +67,27 @@
 		border-color: rgba(0,0,0,.3);
 		background: #bbb;
 	}
+
+	table{
+		border-collapse: collapse;
+		margin: 0 auto;
+		text-align: center;
+    }
+    table td, table th{
+		border: 1px solid #cad9ea;
+		color: #666;
+		height: 30px;
+	}
+	table thead th{
+		background-color: #CCE8EB;
+		width: 100px;
+	}
+	table tr:nth-child(odd){
+		background: #fff;
+	}
+	table tr:nth-child(even){
+		background: #F5FAFA;
+	}
 </style>
 
 
@@ -85,7 +106,7 @@
 				<!-- 个人任务区 -->
 				<!-- 增加按钮 -->
 				<br>
-				<button style="text-align: center;background-color: #FF66FF;border-radius: 8px;" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
+				<button style="text-align: center;background-color: #FF66FF;border-radius: 8px; padding: 10px 10px" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
 				<br><br>
 
 				<!-- 表 -->
@@ -112,12 +133,14 @@
 						</tr>
 					{% endfor %}
 				</table>
-				
+				<br><br><br>
 			</div>
             <div id="group">组任务表将在这里显示</div>
-            <div id="profile">个人信息在这里<br><br>显示与修改</div>
+			<div id="profile">个人信息在这里<br><br>显示与修改</div>
+			
         </div>
-    </div>
+	</div>
+	
 
     {% if messages %}
     <script>
