@@ -11,7 +11,7 @@ def setFinished(request, uname, ptno):
     if(cookie_username == uname):
         dbconnection = dbconn()
         dbconnection.connect()
-        dbconnection.exec("update ptasklist set ptfinishflag = '1' where ptno=%s and pt_uno=%s" % (ptno, uno))
+        dbconnection.exec(f"CALL PERSONFINISH ({ptno})")
         dbconnection.close()
         return redirect('/user/%s/#personal' % uname)
     else:
@@ -41,7 +41,8 @@ def addpersonalapi(request, uname):
         ptbegintime = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
         if ptreptype == '0':
             dbconnection.doing("INSERT INTO PTaskList (ptno,pt_uno,ptname,ptbegintime,ptendtime,ptimportance) VALUES(NULL, %s, '%s', '%s', '%s', %s);" % (uno, ptname, ptbegintime, ptend, ptimp))
-
+        else:
+            dbconnection.doing(f"CALL P_{ptreptype}REP({ptrep},'{ptbegintime}','{ptend}',{uno},'{ptname}',{ptimp});")
         dbconnection.close()
         return redirect('/user/%s/#personal' % uname)
     else:

@@ -33,4 +33,5 @@ urlpatterns = [
     path('setfinished/<str:uname>/<str:ptno>', personal_TODO_views.setFinished),
     path('addPersonal/<str:uname>/', personal_TODO_views.interface),
     path('addpersonal_api/<str:uname>/', personal_TODO_views.addpersonalapi),
+    path('changeprofile/<str:uname>/', user_profile_views.changeprofile),
 ]

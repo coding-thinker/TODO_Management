@@ -136,7 +136,20 @@
 				<br><br><br>
 			</div>
             <div id="group">组任务表将在这里显示</div>
-			<div id="profile">个人信息在这里<br><br>显示与修改</div>
+			<div id="profile">
+				<form style="color: rgb(106,146,168);text-align: center;" action="/changeprofile/{{ uname }}/" method="post">
+					{% csrf_token %} 
+					请填写旧邮箱以确认身份<br>
+					原邮箱<input type='text' name='olduemail'><br>
+					用户名:<input type='text' name='unamebox' onchange="vertifyName()"><br><label id="userWarning"></label><br>
+					密码:<input type='password' name='upwdbox' onchange="vertifyPwd()"><br>
+					显示密码<input type='checkbox' name='showpwdbox' onchange='showpwd()'><br>
+					<label id="pwdWarning"></label><br>
+					邮箱:<input type='text' name='uemail' onchange="vertifyEmail()"><br><label id="emailWarning"></label><br>
+					确认提交更改:<input type='checkbox' name='profileChangeConfirm' onchange='changeconfirm()'><br>
+					<input type='submit' hidden = 'hidden' value='真的确认提交更改' name='profileChangeSubmit'>
+				</form>
+			</div>
 			
         </div>
 	</div>
@@ -162,6 +175,85 @@
             }
             alert('登出完成');
 			location.href = '/login'
+		}
+
+		function showpwd(){
+			pwd = document.getElementsByName('upwdbox')[0]
+			box = document.getElementsByName('showpwdbox')[0]
+			if(box.checked){
+				pwd.type = 'text'
+			}else{
+				pwd.type = 'password'
+			}
+		}
+
+		function changeconfirm(){
+			if(document.getElementsByName('profileChangeConfirm')[0].checked){
+				document.getElementsByName('profileChangeSubmit')[0].hidden=null
+			}else{
+				document.getElementsByName('profileChangeSubmit')[0].hidden='hidden'
+			}
+		}
+
+		function vertifyName(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var user = document.getElementsByName("unamebox")[0].value
+			var error = ''
+			var x
+			if(user.length < 5 || user.length > 20){
+				error += '用户名长度应当在5-20之间'
+			}
+			for(x in not_allowed){
+				if(user.indexOf(not_allowed[x]) != -1){
+					error += ' 用户名不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+					break
+				}
+			}
+			if(error == ''){
+				error = "这个用户名看上去挺合适"
+			}
+			document.getElementById("userWarning").innerHTML = error
+		}
+
+		function vertifyEmail(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var user = document.getElementsByName("uemail")[0].value
+			var error = ''
+
+			if(user.indexOf('@') == -1){
+				error += '你的邮箱好像没有@耶?'
+			}else{
+				if(user.indexOf('@') == 0){
+					error += '你的邮箱@前面咋没有东西?'
+				}
+				if(user.indexOf('@') == user.length - 1){
+					error += '你的邮箱@后面咋没有东西?'
+				}
+			} 
+			if(error == ''){
+				error = "这个邮箱看上去挺合适"
+			}
+			document.getElementById("emailWarning").innerHTML = error
+		}
+
+		function vertifyPwd(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var pwd = document.getElementsByName("upwdbox")[0].value
+			var error = ''
+			var x
+			if(pwd.length < 5 || pwd.length > 20){
+				error += '密码长度应当在5-20之间'
+			}
+			for(x in not_allowed){
+				if(pwd.indexOf(not_allowed[x]) != -1){
+					error += ' 密码不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+					break
+				}
+			}
+			if(error == ''){
+				error = "这个密码看上去挺合适"
+			}
+			document.getElementById("pwdWarning").innerHTML = error
 		}
 	</script>
 </body>

@@ -18,7 +18,7 @@ def register(request):
             if each in pwd:
                 return render(request, os.path.join(BASE_DIR ,"register_interface/templates/Register.html"), {"messages": ['密码内含有非法字符']})     
             if each in user:
-                return render(request, os.path.join(BASE_DIR ,"register_interface/templates/Register.html"), {"messages": ['密码内含有非法字符']})     
+                return render(request, os.path.join(BASE_DIR ,"register_interface/templates/Register.html"), {"messages": ['用户名内含有非法字符']})     
         if not 5 <= len(user)<=20:
             return render(request, os.path.join(BASE_DIR ,"register_interface/templates/Register.html"), {"messages": ['用户名长度非法']})     
         if not 5 <= len(pwd)<=20:

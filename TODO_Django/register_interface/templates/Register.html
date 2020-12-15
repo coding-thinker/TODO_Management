@@ -35,8 +35,15 @@
         var error = ''
 
         if(user.indexOf('@') == -1){
-            error += '你的邮箱好像没有@耶?'
-        }
+				error += '你的邮箱好像没有@耶?'
+        }else{
+            if(user.indexOf('@') == 0){
+                error += '你的邮箱@前面咋没有东西?'
+            }
+            if(user.indexOf('@') == user.length - 1){
+                error += '你的邮箱@后面咋没有东西?'
+            }
+        } 
 
         if(error == ''){
             error = "这个邮箱看上去挺合适"
