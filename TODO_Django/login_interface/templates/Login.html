@@ -8,22 +8,27 @@
 </head>
 
 
-<body background="http://attach.bbs.miui.com/forum/201210/31/200914wgvfz8bfwtftgubg.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
-   <h1 style="color: rgb(106,146,168);text-align: center;">TODO_Management</h1>
-   <h1 style="color: rgb(106,146,168);text-align: center;">登录界面</h1>
-    <form style="color: rgb(106,146,168);text-align: center;" action="/login_api/" method="post">
-        {% csrf_token %} 
-        <br><br>
-        <strong>用户名：</strong><input type="text" name="user"/> <br><br>
-        <strong>密码：</strong><input type="password" name="pwd"/><br><br>
-        <div>&nbsp;</div>
-        <input class="LoginButton" type="submit" value="登录"/> <br>
-    </form>
-
-    <br>
-    <button class="GoToRegisterButton" onclick="location.href='/register'">
-        没有账号？注册一下
-    </button>
+<body>
+  <div class="page">
+      <div class="container">
+          <div class="left">
+              <div class="login">TODO</div>
+              <div class="eula">Get your life in order</div>
+          </div>
+          <div class="right" >
+              <form class="form" action="/login_api/" method="post">
+                  {%csrf_token%}
+                  <label >Username</label>
+                  <input type="text" name="user">
+                  <label >Password</label>
+                  <input type="password" name="pwd">
+                  <input type="submit" id="submit" value="Submit">
+              </form>
+              <br>
+              <button class="GoToRegisterButton" style="color: rgb(106,146,168);text-align:center" onclick="location.href='/register'">没有账号？注册一下</button>
+          </div>
+      </div>
+  </div>
 
     {% if messages %}
     <script>
@@ -32,5 +37,6 @@
         {% endfor %}
     </script>
     {% endif %}
+
 </body>
 </html>

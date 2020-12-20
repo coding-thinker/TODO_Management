@@ -43,7 +43,7 @@
             if(user.indexOf('@') == user.length - 1){
                 error += '你的邮箱@后面咋没有东西?'
             }
-        } 
+        }
 
         if(error == ''){
             error = "这个邮箱看上去挺合适"
@@ -70,7 +70,7 @@
         }
         document.getElementById("pwdWarning").innerHTML = error
         if(document.getElementById("pwd2").value.length != 0){
-            vertifyPwd2()
+            verifyPwd2()
         }
     }
 
@@ -97,25 +97,35 @@
 </script>
 
 
-<body background="http://attach.bbs.miui.com/forum/201210/31/200914wgvfz8bfwtftgubg.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
-   <h1 style="color: rgb(106,146,168);text-align: center;">TODO_Management</h1>
-   <h1 style="color: rgb(106,146,168);text-align: center;">注册界面</h1>
-    <form style="color: rgb(106,146,168);text-align: center;" action="/register_api/" method="post">
-        {% csrf_token %} 
-        <br><br>
-        <strong>用户名：</strong><input id="user" type="text" name="user" onchange="vertifyName()"/> <br>
-        <label id="userWarning"></label> <br><br>
-        <strong>邮箱：</strong><input id="email" type="text" name="email" onchange="vertifyEmail()"/> <br>
-        <label id="emailWarning"></label> <br><br>
-        <strong>密码：</strong><input id="pwd" type="password" name="pwd" onchange="vertifyPwd()"/><br>
-        <label id="pwdWarning"></label> <br><br>
-        <strong>确认密码：</strong><input id="pwd2" type="password" name="pwd2" onchange="vertifyPwd2()"/><br>
-        <label id="pwd2Warning"></label> <br><br>
-        <div>&nbsp;</div>
-        <input class="RegisterButton" type="submit" value="注册"/> <br>
-    </form>
-
-    <button onclick="location.href='/login'"> 返回 </button>
+<body>
+  <div class="page">
+      <div class="container">
+          <div class="left">
+              <div class="login">Register</div>
+              <div class="eula">Write down your information</div>
+          </div>
+          <div class="right">
+              <form class="form" action="/register_api/" method="post">
+                  {%csrf_token%}
+                  <label>Username</label>
+                  <input type="text" id="user" name="user" onchange="vertifyName()">
+                  <label id="userWarning"></label>
+                  <label >Email</label>
+                  <input type="text" id="email" name="email" onchange="vertifyEmail()">
+                  <label id="emailWarning"></label>
+                  <label>Password</label>
+                  <input type="password" id="pwd" name="pwd" onchange="vertifyPwd()">
+                  <label id="pwdWarning"></label>
+                  <label>Confirm The Password</label>
+                  <input type="password" id="pwd2" name="pwd2" onchange="vertifyPwd2()">
+                  <label id="pwd2Warning"></label>
+                  <input type="submit" id="submit" value="Register">
+              </form>
+              <br>
+              <button class="GoToRegisterButton" style="color: rgb(106,146,168);text-align:center;"onclick="location.href='/login'">返回</button>
+          </div>
+      </div>
+  </div>
 
     {% if messages %}
     <script>
@@ -125,6 +135,5 @@
     </script>
     {% endif %}
 
-    
 </body>
 </html>
