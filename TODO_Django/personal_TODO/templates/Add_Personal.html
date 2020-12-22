@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="/static/Register.css" />
+    <title>Personal Information</title>
+    <link rel="stylesheet" type="text/css" href="/static/Add_Personal.css" />
 </head>
 
 
@@ -13,34 +13,47 @@
 </script>
 
 
-<body background="http://attach.bbs.miui.com/forum/201210/31/200914wgvfz8bfwtftgubg.jpg" style="background-repeat:no-repeat; background-size:100% 100%; background-attachment:fixed;">
-   <h1 style="color: rgb(106,146,168);text-align: center;">TODO_Management</h1>
-   <h1 style="color: rgb(106,146,168);text-align: center;">用户: {{ uname }} 正在添加个人任务</h1>
-    <form style="color: rgb(106,146,168);text-align: center;" action="/addpersonal_api/{{ uname }}/" method="post">
-        {% csrf_token %} 
-        <br><br>
-        <strong>重复类型:</strong>
-        <select name="ptreptype">
-            <option value="0">不重复</option>
-            <option value="DAY">日重复</option>
-            <option value="WEEK">周重复</option>
-            <option value="MONTH">月重复</option>
-        </select><br>
-        <strong>任务名称:</strong><input type="text" name="ptname" /> <br>
-        <strong>任务截止时间:</strong><input type="datetime-local" name="ptend"/> <br>
-        <strong>任务重复次数:</strong><input type="number" name="ptrep" value = '0' min="0" step="1"/><br>
-        <strong>重要性:</strong>
-        <select name="ptimp">
-            <option value="0">0级</option>
-            <option value="1">1级</option>
-            <option value="2">2级</option>
-            <option value="3">3级</option>
-            <option value="4">4级</option>
-            <option value="5">5级</option>
-        </select><br><br>
-        <input class="RegisterButton" type="submit" value="添加"/> <br>
-    </form>
-    <button class="RegisterButton" onclick="location.href='/user/{{ uname }}/#personal'">返回</button><br>
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="left">
+        <div class="login">修改信息</div>
+        <div class="eula">用户: {{ uname }} 正在添加个人任务</div>
+         </div>
+        <div class="right_add">
+            <form class="form" action="/addpersonal_api/{{ uname }}/" method="post">
+                {% csrf_token %}
+                <label>重复类型:</label>
+                <select name="ptreptype">
+                    <option value="0">不重复</option>
+                    <option value="DAY">日重复</option>
+                    <option value="WEEK">周重复</option>
+                    <option value="MONTH">月重复</option>
+                </select>
+                <br><br>
+                <label>任务名称:</label>
+                <input class= "input_add" type="text" name="ptname"/>
+                <label>任务截止时间:</label>
+                <input class= "input_add" type="datetime-local" name="ptend"/>
+                <label>任务重复次数:</label>
+                <input class= "input_add" type="number" name="ptrep" value = '0' min="0" step="1"/>
+                <label>重要性:</label>
+                <select name="ptimp">
+                    <option value="0">0级</option>
+                    <option value="1">1级</option>
+                    <option value="2">2级</option>
+                    <option value="3">3级</option>
+                    <option value="4">4级</option>
+                    <option value="5">5级</option>
+                </select>
+                <br><br>
+                <input class="submit_add" type="submit" class="add_button" value="添加"/>
+                <button class="GoToRegisterButton_add" style="color: rgb(106,146,168);text-align:center;"onclick="location.href='/user/{{ uname }}/#personal'">返回</button>
+            </form>
+        </div>
+    </div>
+  </div>>
+
     {% if messages %}
     <script>
         {% for msg in messages %}

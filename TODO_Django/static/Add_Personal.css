@@ -105,7 +105,6 @@ label {
   display: block;
   font-size: 14px;
   height: 16px;
-  margin-top: 20px;
   margin-bottom: 5px;
 }
 input {
@@ -125,7 +124,7 @@ input::-moz-focus-inner {
   background: transparent;
   color: #707075;
   transition: color 300ms;
-  //margin-bottom: 5px;
+  margin-bottom: 5px;
 }
 #submit:focus {
   color: #f2f2f2;
@@ -161,6 +160,7 @@ input::-moz-focus-inner {
   line-height: 30px;
   outline: none !important;
   width: 120%;
+  margin-bottom: 25px;
 }
 input::-moz-focus-inner {
   border: 0;
@@ -181,13 +181,13 @@ input::-moz-focus-inner {
   color: #707075;
   transition: color 300ms;
   margin-top: 20px;
-  margin-left:20px;
+  margin-left:16px;
 }
 .GoToRegisterButton_add {
     background-color: transparent;
     border: none;
     color: white;
-    padding: 8px 15px;
+    padding: 15px 15px;
     text-align: center;
     text-decoration: none;
     display:block;

@@ -96,10 +96,28 @@
 	table tr:nth-child(even){
 		background: #F5FAFA;
 	}
+	.raise {
+    background: none;
+    border: 2px solid;
+    font: inherit;
+    line-height: 1;
+    margin: 0.5em;
+    color: #9b9dad;
+    -webkit-transition: 0.25s;
+    transition: 0.25s;
+    padding: 1em 2em;
+    text-transform: none;
+	  --color: #ffa260;
+	  --hover: #e5ff60;
+	  width:100%;
+	}
+	.raise:focus {
+	  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+	  transform: translateY(-0.25em);
+	}
 </style>
 
 <body>
-	<div align='right'><button class='logoutbtn' onclick="Logout()"> 登出 </button></div>
     <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer administration">
         <div class="mdl-layout__drawer">
 			<span class="mdl-layout-title">TODO Menu</span>
@@ -114,8 +132,7 @@
             <div id="personal">
 				<!-- 个人任务区 -->
 				<!-- 增加按钮 -->
-				<br>
-				<button style="border-color: transparent;border-radius: 0px;background: #cfd8dd;" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
+				<button class="raise" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
 				<br><br>
 				<!-- 表 -->
 				<table border='1' style="margin: auto" width="100%" >
@@ -140,24 +157,36 @@
 							</tr>
 							{% endfor %}
 				</table>
-					<br><br><br>
+				<br><br><br>
 			</div>
-            <div id="group">组任务表将在这里显示</div>
-			<div id="profile" class="cont">
-				<form style="color: rgb(106,146,168);text-align: center;" action="/changeprofile/{{ uname }}/" method="post">
+			<div id="group">组任务表将在这里显示</div>
+
+			<div id="profile" class="right">
+				<form class="form" action="/changeprofile/{{ uname }}/" method="post">
 					{% csrf_token %}
-					请填写旧邮箱以确认身份<br>
-					<label>原邮箱</label><input type='text' name='olduemail'><br>
-					用户名:<input type='text' name='unamebox' onchange="vertifyName()"><br><label id="userWarning"></label><br>
-					密码:<input type='password' name='upwdbox' onchange="vertifyPwd()"><br>
-					显示密码<input type='checkbox' name='showpwdbox' onchange='showpwd()'><br>
-					<label id="pwdWarning"></label><br>
-					邮箱:<input type='text' name='uemail' onchange="vertifyEmail()"><br><label id="emailWarning"></label><br>
-					确认提交更改:<input type='checkbox' name='profileChangeConfirm' onchange='changeconfirm()'><br>
-					<input type='submit' hidden = 'hidden' value='真的确认提交更改' name='profileChangeSubmit'>
+					<br>
+					<label>请填写旧邮箱以确认身份</label>
+					<label>原邮箱:</label>
+					<input type='text' name='olduemail'>
+					<label>用户名:</label>
+					<input type='text' name='unamebox' onchange="vertifyName()">
+					<label id="userWarning"></label>
+					<label>密码:</label>
+					<input type='password' name='upwdbox' onchange="vertifyPwd()"><br>
+					<label>显示密码
+						<input type='checkbox' name='showpwdbox' onchange='showpwd()'></label>
+					<label class="waring" id="pwdWarning"></label>
+					<label>邮箱:</label>
+					<input type='text' name='uemail' onchange="vertifyEmail()">
+					<label class="waring" id="emailWarning"></label>
+					<label>确认提交更改:
+						<input type='checkbox' name='profileChangeConfirm' onchange='changeconfirm()'>
+						<input type='submit' hidden = 'hidden' value='真的确认提交更改' name='profileChangeSubmit'>
+					</label>
+						<br>
 				</form>
 			</div>
-			</div>
+		</div>
 	</div>
 
 
