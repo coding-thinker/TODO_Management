@@ -1,2 +1,9 @@
 *.exe
+<<<<<<< HEAD
 *.pyc
+=======
+*.pyc
+*.docx
+*.txt
+*.auth
+>>>>>>> 26cf49658629dd37a00e2839b1ba3223486e9dd1

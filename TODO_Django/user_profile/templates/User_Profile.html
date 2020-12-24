@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	  <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.teal-deep_purple.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/User_Profile.css" />
+   <script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:300,400,700|Roboto:300,300i,400,400i,500,700,900" rel="stylesheet">
+  </head>
+
+
+<style type="text/css">
+	*{margin: 0;padding: 0}
+
+
+	.wrap{
+		width: 900px;
+		height: auto;
+		/* border: 1px solid brown; */
+		margin: 20px auto;
+		position: relative;
+	}
+	.nav{
+		width: 100%;
+		height: 30px;
+	}
+	.nav a{
+		width: 299px;
+		height: 30px;
+		text-align: center;
+		line-height: 30px;
+		border-right: 1px solid brown;
+		border-bottom: 1px solid brown;
+		float: left;
+		text-decoration: none;
+		color:black;
+		border-radius: 8px;
+		background-color: #FF9933;
+	}
+	.sh{
+		justify-content: center;
+		margin-left: 250px;
+		width: 80%;
+		height: auto;
+		position: absolute;
+		left: 0;
+		top:31px;
+		background: #ffffff;
+	}
+	.sh div{
+		display: none;
+		text-align: center;
+	}
+	.sh div:target{
+		display: block;
+	}
+	.logoutbtn {
+    display: inline-block;
+    padding: .3em .5em;
+    background-image: linear-gradient(#ddd, #bbb);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: .3em;
+    box-shadow: 0 1px white inset;
+    text-align: center;
+    text-shadow: 0 1px 1px black;
+    color:white;
+    font-weight: bold;
+	}
+	.logoutbtn:active{
+		box-shadow: .05em .1em .2em rgba(0,0,0,.6) inset;
+		border-color: rgba(0,0,0,.3);
+		background: #bbb;
+	}
+
+	table{
+		border-collapse: collapse;
+		margin: 0 auto;
+		text-align: center;
+    }
+    table td, table th{
+		border: 1px solid #cad9ea;
+		color: #666;
+		height: 30px;
+	}
+	table thead th{
+		background-color: #CCE8EB;
+		width: 100px;
+	}
+	table tr:nth-child(odd){
+		background: #fff;
+	}
+	table tr:nth-child(even){
+		background: #F5FAFA;
+	}
+	.raise {
+    background: none;
+    border: 2px solid;
+    font: inherit;
+    line-height: 1;
+    margin: 0.5em;
+    color: #9b9dad;
+    -webkit-transition: 0.25s;
+    transition: 0.25s;
+    padding: 1em 2em;
+    text-transform: none;
+	  --color: #ffa260;
+	  --hover: #e5ff60;
+	  width:100%;
+	}
+	.raise:focus {
+	  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+	  transform: translateY(-0.25em);
+	}
+</style>
+
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer administration">
+        <div class="mdl-layout__drawer">
+			<span class="mdl-layout-title">TODO Menu</span>
+			<div class="mdl-navigation">
+            <a class="mdl-navigation__link" href="#personal">个人任务</a>
+            <a class="mdl-navigation__link" href="#group">组任务</a>
+            <a class="mdl-navigation__link" href="#profile">个人信息</a>
+				<button class="logoutbtn" style="border-color: transparent;" onclick="Logout()"> 登出 </button>
+        </div>
+		</div>
+        <div class="sh">
+            <div id="personal">
+				<!-- 个人任务区 -->
+				<!-- 增加按钮 -->
+				<button class="raise" onclick="location.href='/addPersonal/{{ uname }}'"> 增加个人任务 </button>
+				<br><br>
+				<!-- 表 -->
+				<table border='1' style="margin: auto" width="100%" >
+							<tr>
+								<th>标志</th>
+                                <th>任务号</th>
+                                <th>任务名称</th>
+                                <th>开始时间</th>
+                                <th>截止时间</th>
+                                <th>完成时间</th>
+                                <th>重要性</th>
+                                <th>勾选完成</th>
+							</tr>
+							<!-- 表体 -->
+							{% for item in personal %}
+							<tr>
+								<td><input type="checkbox" {{item.checked}} onclick="return false;"></td>
+								{% for cell in item.data %}
+								<td> {{ cell }} </td>
+								{% endfor %}
+								<td><form action="/setfinished/{{ uname }}/{{ item.ptno }}" method="POST"> {% csrf_token %}  <input type="submit" value='完成'></form></td>
+							</tr>
+							{% endfor %}
+				</table>
+				<br><br><br>
+			</div>
+			<div id="group">组任务表将在这里显示</div>
+
+			<div id="profile" class="right">
+				<form class="form" action="/changeprofile/{{ uname }}/" method="post">
+					{% csrf_token %}
+					<br>
+					<label>请填写旧邮箱以确认身份</label>
+					<label>原邮箱:</label>
+					<input type='text' name='olduemail'>
+					<label>用户名:</label>
+					<input type='text' name='unamebox' onchange="vertifyName()">
+					<label id="userWarning"></label>
+					<label>密码:</label>
+					<input type='password' name='upwdbox' onchange="vertifyPwd()"><br>
+					<label>显示密码
+						<input type='checkbox' name='showpwdbox' onchange='showpwd()'></label>
+					<label class="waring" id="pwdWarning"></label>
+					<label>邮箱:</label>
+					<input type='text' name='uemail' onchange="vertifyEmail()">
+					<label class="waring" id="emailWarning"></label>
+					<label>确认提交更改:
+						<input type='checkbox' name='profileChangeConfirm' onchange='changeconfirm()'>
+						<input type='submit' hidden = 'hidden' value='真的确认提交更改' name='profileChangeSubmit'>
+					</label>
+						<br>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg }}');
+        {% endfor %}
+    </script>
+	{% endif %}
+
+	<script>
+		function Logout(){
+			var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+            if (keys) {
+                for (var i = keys.length; i--;) {
+                    document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
+                }
+            }
+            alert('登出完成');
+			location.href = '/login'
+		}
+
+		function showpwd(){
+			pwd = document.getElementsByName('upwdbox')[0]
+			box = document.getElementsByName('showpwdbox')[0]
+			if(box.checked){
+				pwd.type = 'text'
+			}else{
+				pwd.type = 'password'
+			}
+		}
+
+		function changeconfirm(){
+			if(document.getElementsByName('profileChangeConfirm')[0].checked){
+				document.getElementsByName('profileChangeSubmit')[0].hidden=null
+			}else{
+				document.getElementsByName('profileChangeSubmit')[0].hidden='hidden'
+			}
+		}
+
+		function vertifyName(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var user = document.getElementsByName("unamebox")[0].value
+			var error = ''
+			var x
+			if(user.length < 5 || user.length > 20){
+				error += '用户名长度应当在5-20之间'
+			}
+			for(x in not_allowed){
+				if(user.indexOf(not_allowed[x]) != -1){
+					error += ' 用户名不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+					break
+				}
+			}
+			if(error == ''){
+				error = "这个用户名看上去挺合适"
+			}
+			document.getElementById("userWarning").innerHTML = error
+		}
+
+		function vertifyEmail(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var user = document.getElementsByName("uemail")[0].value
+			var error = ''
+
+			if(user.indexOf('@') == -1){
+				error += '你的邮箱好像没有@耶?'
+			}else{
+				if(user.indexOf('@') == 0){
+					error += '你的邮箱@前面咋没有东西?'
+				}
+				if(user.indexOf('@') == user.length - 1){
+					error += '你的邮箱@后面咋没有东西?'
+				}
+			}
+			if(error == ''){
+				error = "这个邮箱看上去挺合适"
+			}
+			document.getElementById("emailWarning").innerHTML = error
+		}
+
+		function vertifyPwd(){
+			var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+			var pwd = document.getElementsByName("upwdbox")[0].value
+			var error = ''
+			var x
+			if(pwd.length < 5 || pwd.length > 20){
+				error += '密码长度应当在5-20之间'
+			}
+			for(x in not_allowed){
+				if(pwd.indexOf(not_allowed[x]) != -1){
+					error += ' 密码不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+					break
+				}
+			}
+			if(error == ''){
+				error = "这个密码看上去挺合适"
+			}
+			document.getElementById("pwdWarning").innerHTML = error
+		}
+	</script>
+</body>
+</html>

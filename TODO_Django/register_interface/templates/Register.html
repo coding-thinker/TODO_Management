@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="/static/Register.css" />
+</head>
+
+
+<script>
+    function vertifyName(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var user = document.getElementById("user").value
+        var error = ''
+        var x
+        if(user.length < 5 || user.length > 20){
+            error += '用户名长度应当在5-20之间'
+        }
+        for(x in not_allowed){
+            if(user.indexOf(not_allowed[x]) != -1){
+                error += ' 用户名不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+                break
+            }
+        }
+        if(error == ''){
+            error = "这个用户名看上去挺合适"
+        }
+        document.getElementById("userWarning").innerHTML = error
+    }
+
+    function vertifyEmail(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var user = document.getElementById("email").value
+        var error = ''
+
+        if(user.indexOf('@') == -1){
+				error += '你的邮箱好像没有@耶?'
+        }else{
+            if(user.indexOf('@') == 0){
+                error += '你的邮箱@前面咋没有东西?'
+            }
+            if(user.indexOf('@') == user.length - 1){
+                error += '你的邮箱@后面咋没有东西?'
+            }
+        }
+
+        if(error == ''){
+            error = "这个邮箱看上去挺合适"
+        }
+        document.getElementById("emailWarning").innerHTML = error
+    }
+
+    function vertifyPwd(){
+        var not_allowed = ["%", "&", "*", "_", "?", "/", "\\", "|", "!", "~", '"', "'"]
+        var pwd = document.getElementById("pwd").value
+        var error = ''
+        var x
+        if(pwd.length < 5 || pwd.length > 20){
+            error += '密码长度应当在5-20之间'
+        }
+        for(x in not_allowed){
+            if(pwd.indexOf(not_allowed[x]) != -1){
+                error += ' 密码不得含有非法字符 %, &, *, _, ?, /, \\, |, !, ~, ", \''
+                break
+            }
+        }
+        if(error == ''){
+            error = "这个密码看上去挺合适"
+        }
+        document.getElementById("pwdWarning").innerHTML = error
+        if(document.getElementById("pwd2").value.length != 0){
+            verifyPwd2()
+        }
+    }
+
+    function vertifyPwd2(){
+        var pwd = document.getElementById("pwd").value
+        var pwd2 = document.getElementById("pwd2").value
+        var error = ''
+        var x
+        if(pwd.length != pwd2.length){
+            error = '两次密码不一致'
+        }else{
+            for(x in pwd){
+                if(pwd[x] != pwd2[x]){
+                    error = '两次密码不一致'
+                    break
+                }
+            }
+        }
+        if(error == ''){
+            error = '确认密码无误'
+        }
+        document.getElementById("pwd2Warning").innerHTML = error
+    }
+</script>
+
+
+<body>
+  <div class="page">
+      <div class="container">
+          <div class="left">
+              <div class="login">Register</div>
+              <div class="eula">Write down your information</div>
+          </div>
+          <div class="right">
+              <form class="form" action="/register_api/" method="post">
+                  {%csrf_token%}
+                  <label>Username</label>
+                  <input type="text" id="user" name="user" onchange="vertifyName()">
+                  <label id="userWarning"></label>
+                  <label >Email</label>
+                  <input type="text" id="email" name="email" onchange="vertifyEmail()">
+                  <label id="emailWarning"></label>
+                  <label>Password</label>
+                  <input type="password" id="pwd" name="pwd" onchange="vertifyPwd()">
+                  <label id="pwdWarning"></label>
+                  <label>Confirm The Password</label>
+                  <input type="password" id="pwd2" name="pwd2" onchange="vertifyPwd2()">
+                  <label id="pwd2Warning"></label>
+                  <input type="submit" id="submit" value="Register">
+              </form>
+              <br>
+              <button class="GoToRegisterButton" style="color: rgb(106,146,168);text-align:center;"onclick="location.href='/login'">返回</button>
+          </div>
+      </div>
+  </div>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+
+</body>
+</html>

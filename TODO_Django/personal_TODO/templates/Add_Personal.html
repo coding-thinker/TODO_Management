@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Personal Information</title>
+    <link rel="stylesheet" type="text/css" href="/static/Add_Personal.css" />
+</head>
+
+
+<script>
+
+</script>
+
+
+<body>
+  <div class="page">
+    <div class="container">
+      <div class="left">
+        <div class="login">修改信息</div>
+        <div class="eula">用户: {{ uname }} 正在添加个人任务</div>
+         </div>
+        <div class="right_add">
+            <form class="form" action="/addpersonal_api/{{ uname }}/" method="post">
+                {% csrf_token %}
+                <label>重复类型:</label>
+                <select name="ptreptype">
+                    <option value="0">不重复</option>
+                    <option value="DAY">日重复</option>
+                    <option value="WEEK">周重复</option>
+                    <option value="MONTH">月重复</option>
+                </select>
+                <br><br>
+                <label>任务名称:</label>
+                <input class= "input_add" type="text" name="ptname"/>
+                <label>任务截止时间:</label>
+                <input class= "input_add" type="datetime-local" name="ptend"/>
+                <label>任务重复次数:</label>
+                <input class= "input_add" type="number" name="ptrep" value = '0' min="0" step="1"/>
+                <label>重要性:</label>
+                <select name="ptimp">
+                    <option value="0">0级</option>
+                    <option value="1">1级</option>
+                    <option value="2">2级</option>
+                    <option value="3">3级</option>
+                    <option value="4">4级</option>
+                    <option value="5">5级</option>
+                </select>
+                <br><br>
+                <input class="submit_add" type="submit" class="add_button" value="添加"/>
+                <button class="GoToRegisterButton_add" style="color: rgb(106,146,168);text-align:center;"onclick="location.href='/user/{{ uname }}/#personal'">返回</button>
+            </form>
+        </div>
+    </div>
+  </div>>
+
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg }}');
+        {% endfor %}
+    </script>
+    {% endif %}
+
+    
+</body>
+</html>
